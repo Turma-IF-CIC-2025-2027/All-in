@@ -1,0 +1,6 @@
+# -------------------------------------------------------------------------------------
+# Ficheiro: .github/CODEOWNERS
+# Objetivo: Garantir 2 aprovações (Owner + Responsável da Equipa) para o branch 'main'.
+# -------------------------------------------------------------------------------------
+
+* @Raul-Paiva @nmfcouto @Turma-IF-CIC-2025-2027/responsibles-team
