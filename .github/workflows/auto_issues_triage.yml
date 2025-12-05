@@ -1,0 +1,112 @@
+name: Automatic Issue Triage
+
+# Triggers when a new Issue is opened
+on:
+  issues:
+    types: [opened]
+
+# Permissions are CRUCIAL for this workflow
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+jobs:
+  auto_issues_triage:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Define Variables and IDs
+        id: set_vars
+        run: |
+
+          # Your Organization Project ID
+          echo "ORG_PROJECT_ID=PVT_kwDODrIVqM4BJ2wt" >> $GITHUB_ENV
+
+          # 'Status' Field ID and the 'Pending' Value ID
+          echo "STATUS_FIELD_ID=PVTSSF_lADODrIVqM4BJ2wtzg55V6w" >> $GITHUB_ENV
+          echo "PENDING_VALUE_ID=98236657" >> $GITHUB_ENV
+
+          # 'Priority' Field ID and the 'Low' Value ID
+          echo "PRIORITY_FIELD_ID=PVTSSF_lADODrIVqM4BJ2wtzg55V" >> $GITHUB_ENV
+          echo "LOW_VALUE_ID=3609dcd7" >> $GITHUB_ENV
+
+          # ID of the Issue/PR that triggered the workflow
+          echo "ISSUE_NODE_ID=${{ github.event.issue.node_id }}" >> $GITHUB_ENV
+
+      - name: 1. Add Labels (status:pending, priority:low)
+        uses: actions/github-script@v6
+        with:
+          script: |
+
+            const issueNumber = context.issue.number;
+            const labelsToAdd = ['status: pending', 'priority: low'];
+
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issueNumber,
+              labels: labelsToAdd
+            });
+            console.log(`Labels added: ${labelsToAdd.join(', ')}`);
+
+      - name: 2. Add Issue to Project and Set Fields (GraphQL)
+        uses: actions/github-script@v6
+        with:
+          script: |
+
+            const issueNodeId = process.env.ISSUE_NODE_ID;
+            const projectId = process.env.ORG_PROJECT_ID;
+            const statusFieldId = process.env.STATUS_FIELD_ID;
+            const pendingValueId = process.env.PENDING_VALUE_ID;
+            const priorityFieldId = process.env.PRIORITY_FIELD_ID;
+            const lowValueId = process.env.LOW_VALUE_ID;
+
+
+            // 1. Add the Issue to the Project (This returns the projectItemId)
+            const setFieldsMutation = `
+              mutation($project: ID!, $content: ID!) {
+                addProjectV2ItemById(input: {projectId: $project, contentId: $content}) {
+                  item {
+                    id
+                  }
+                }
+              }
+            `;
+
+            
+            const addedItem = await github.graphql(setFieldsMutation, {
+              project: projectId,
+              content: issueNodeId
+            });
+
+
+            const projectItemId = addedItem.addProjectV2ItemById.item.id;
+            console.log(`Project Item ID retrieved: ${projectItemId}`);
+
+
+            // 2. Set the Status Field
+            await github.graphql(`
+              mutation {
+                updateProjectV2ItemFieldValue(input: {
+                  projectId: "${projectId}", 
+                  itemId: "${projectItemId}", 
+                  fieldId: "${statusFieldId}", 
+                  value: { singleSelectOptionId: "${pendingValueId}" }
+                }) { clientMutationId }
+              }
+            `);
+
+            
+            // 3. Set the Priority Field
+            await github.graphql(`
+              mutation {
+                updateProjectV2ItemFieldValue(input: {
+                  projectId: "${projectId}", 
+                  itemId: "${projectItemId}", 
+                  fieldId: "${priorityFieldId}", 
+                  value: { singleSelectOptionId: "${lowValueId}" }
+                }) { clientMutationId }
+              }
+            `);
+
+            console.log("Status and Priority fields set successfully.");
