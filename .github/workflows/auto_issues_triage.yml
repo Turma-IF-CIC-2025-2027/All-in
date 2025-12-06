@@ -52,6 +52,7 @@ jobs:
       - name: 2. Add Issue to Project and Set Fields (GraphQL)
         uses: actions/github-script@v6
         with:
+          github-token: ${{ secrets.PROJECT_PAT }}
           script: |
 
             const issueNodeId = process.env.ISSUE_NODE_ID;
