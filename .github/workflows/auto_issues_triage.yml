@@ -27,7 +27,7 @@ jobs:
           echo "PENDING_VALUE_ID=98236657" >> $GITHUB_ENV
 
           # 'Priority' Field ID and the 'Low' Value ID
-          echo "PRIORITY_FIELD_ID=PVTSSF_lADODrIVqM4BJ2wtzg55V" >> $GITHUB_ENV
+          echo "PRIORITY_FIELD_ID=PVTSSF_lADODrIVqM4BJ2wtzg55V-I" >> $GITHUB_ENV
           echo "LOW_VALUE_ID=3609dcd7" >> $GITHUB_ENV
 
           # ID of the Issue/PR that triggered the workflow
