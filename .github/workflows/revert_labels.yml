@@ -56,7 +56,7 @@ jobs:
         if: steps.check_action.outputs.revert_action == 'delete'
         uses: actions/github-script@v7
         with:
-          github-token: ${{ secrets.PROJECT_PAT }}
+          github-token: ${{ secrets.LABELS_PAT }}
           script: |
             const labelName = context.payload.label.name;
             console.log(`A reverter a criação: A eliminar a label "${labelName}"`);
@@ -78,7 +78,7 @@ jobs:
           LABEL_COLOR: ${{ steps.check_action.outputs.revert_color }}
           LABEL_DESCRIPTION: ${{ steps.check_action.outputs.revert_description }}
         with:
-          github-token: ${{ secrets.PROJECT_PAT }}
+          github-token: ${{ secrets.LABELS_PAT }}
           script: |
             const labelName = context.payload.label.name;
             const labelColor = process.env.LABEL_COLOR;
@@ -106,7 +106,7 @@ jobs:
           REVERT_TO_COLOR: ${{ steps.check_action.outputs.revert_color }}
           REVERT_TO_DESCRIPTION: ${{ steps.check_action.outputs.revert_description }}
         with:
-          github-token: ${{ secrets.PROJECT_PAT }}
+          github-token: ${{ secrets.LABELS_PAT }}
           script: |
             const currentLabelName = context.payload.label.name;
             const revertToName = process.env.REVERT_TO_NAME;
