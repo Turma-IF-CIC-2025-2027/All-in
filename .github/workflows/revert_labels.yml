@@ -1,0 +1,118 @@
+name: Revert Label Changes
+
+on:
+  label:
+    types: [created, deleted, edited]
+
+jobs:
+  revert_label_changes:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Action Type
+        id: check_action
+        run: |
+          ACTION=${{ github.event.action }}
+          LABEL_NAME="${{ github.event.label.name }}"
+          echo "Action: $ACTION on label: $LABEL_NAME"
+
+          if [ "$ACTION" == "created" ]; then
+            echo "::set-output name=revert_action::delete"
+          elif [ "$ACTION" == "deleted" ]; then
+            echo "::set-output name=revert_action::create"
+            echo "::set-output name=label_color::${{ github.event.label.color }}"
+            echo "::set-output name=label_description::${{ github.event.label.description }}"
+          elif [ "$ACTION" == "edited" ]; then
+            # If it was edited, we try to restore the old name and color (if available)
+            # The 'edited' payload provides the PREVIOUS name/color in 'label/changes'.
+            OLD_NAME="${{ github.event.changes.name.from }}"
+            OLD_COLOR="${{ github.event.changes.color.from }}"
+
+            # If the old name exists (was changed), use it. Otherwise, use the current name for the revert.
+            if [ -n "$OLD_NAME" ]; then
+                echo "::set-output name=revert_name::$OLD_NAME"
+            else
+                echo "::set-output name=revert_name::$LABEL_NAME"
+            fi
+            
+            # If the old color exists (was changed), use it. Otherwise, use the current color for the revert.
+            if [ -n "$OLD_COLOR" ]; then
+                echo "::set-output name=revert_color::$OLD_COLOR"
+            else
+                echo "::set-output name=revert_color::${{ github.event.label.color }}"
+            fi
+
+            echo "::set-output name=revert_action::edit"
+          fi
+
+      - name: Revert Creation (Delete Label)
+        if: steps.check_action.outputs.revert_action == 'delete'
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.PROJECT_PAT }}
+          script: |
+            // The label that was just created is the target for deletion
+            const labelName = '${{ github.event.label.name }}';
+            console.log(`Reverting creation: Deleting label "${labelName}"`);
+            try {
+              await github.rest.issues.deleteLabel({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                name: labelName
+              });
+              console.log(`Label "${labelName}" deleted successfully.`);
+            } catch (error) {
+              console.error(`Error deleting label: ${error.message}`);
+              core.setFailed(`Failed to delete label: ${error.message}`);
+            }
+
+      - name: Revert Deletion (Create Label)
+        if: steps.check_action.outputs.revert_action == 'create'
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.PROJECT_PAT }}
+          script: |
+            const labelName = '${{ github.event.label.name }}';
+            const labelColor = '${{ steps.check_action.outputs.label_color }}';
+            const labelDescription = '${{ steps.check_action.outputs.label_description }}';
+
+            console.log(`Reverting deletion: Recreating label "${labelName}"`);
+            try {
+              await github.rest.issues.createLabel({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                name: labelName,
+                color: labelColor,
+                description: labelDescription
+              });
+              console.log(`Label "${labelName}" recreated successfully.`);
+            } catch (error) {
+              console.error(`Error recreating label: ${error.message}`);
+              core.setFailed(`Failed to recreate label: ${error.message}`);
+            }
+
+      - name: Revert Edition (Update Label)
+        if: steps.check_action.outputs.revert_action == 'edit'
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.PROJECT_PAT }}
+          script: |
+            const currentLabelName = '${{ github.event.label.name }}';
+            const revertToName = '${{ steps.check_action.outputs.revert_name }}';
+            const revertToColor = '${{ steps.check_action.outputs.revert_color }}';
+
+            console.log(`Reverting edit. Current Name: ${currentLabelName}. Reverting to name: ${revertToName}, color: ${revertToColor}`);
+            try {
+              // When reverting an edit, we use the current label name as :name in the path,
+              // and the PREVIOUS name/color values in the request body.
+              await github.rest.issues.updateLabel({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                name: currentLabelName, // Current name of the label in the path
+                new_name: revertToName, // The name it should be changed back to (the previous name)
+                color: revertToColor    // The color it should be changed back to (the previous color)
+              });
+              console.log(`Label edit for "${currentLabelName}" reverted successfully.`);
+            } catch (error) {
+              console.error(`Error reverting label edit: ${error.message}`);
+              core.setFailed(`Failed to revert label edit: ${error.message}`);
+            }
