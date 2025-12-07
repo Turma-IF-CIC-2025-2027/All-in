@@ -13,13 +13,12 @@ jobs:
   revert_label_changes:
     runs-on: ubuntu-latest
     steps:
-      - name: Verificar o Tipo de Ação
+      - name: Verificar o Tipo de Ação e Capturar Dados de Reversão
         id: check_action
-        # Usamos 'github-script' para gerir as saídas de forma nativa
         uses: actions/github-script@v7 
         with:
           script: |
-            // Acesso ao tipo de ação diretamente via context.payload.action
+            const core = require('@actions/core');
             const ACTION = context.payload.action;
             const LABEL_NAME = context.payload.label.name;
             console.log(`Ação: ${ACTION} na label: ${LABEL_NAME}`);
@@ -34,10 +33,10 @@ jobs:
             } else if (ACTION === 'deleted') {
               revertAction = 'create';
             } else if (ACTION === 'edited') {
-              // Reverte para o estado ANTERIOR (se o nome/cor foi alterado)
               revertAction = 'edit';
               const OLD_NAME = context.payload.changes.name?.from;
               const OLD_COLOR = context.payload.changes.color?.from;
+              const OLD_DESCRIPTION = context.payload.changes.description?.from;
 
               if (OLD_NAME) {
                 revertName = OLD_NAME;
@@ -45,14 +44,16 @@ jobs:
               if (OLD_COLOR) {
                 revertColor = OLD_COLOR;
               }
+              if (OLD_DESCRIPTION) {
+                revertDescription = OLD_DESCRIPTION;
+              }
             }
             
-            // Define as saídas usando o novo método 'core.setOutput'
+            // Define as saídas do passo
             core.setOutput('revert_action', revertAction);
             core.setOutput('revert_name', revertName);
             core.setOutput('revert_color', revertColor);
             core.setOutput('revert_description', revertDescription);
-          # REMOVIDO: A secção 'env' que causava o erro foi removida.
           result-encoding: json
 
       - name: Reverter Criação (Eliminar Label)
@@ -77,12 +78,15 @@ jobs:
       - name: Reverter Eliminação (Criar Label)
         if: steps.check_action.outputs.revert_action == 'create'
         uses: actions/github-script@v7
+        env:
+          LABEL_COLOR: ${{ steps.check_action.outputs.revert_color }}
+          LABEL_DESCRIPTION: ${{ steps.check_action.outputs.revert_description }}
         with:
           github-token: ${{ secrets.PROJECT_PAT }}
           script: |
             const labelName = context.payload.label.name;
-            const labelColor = steps.check_action.outputs.revert_color;
-            const labelDescription = steps.check_action.outputs.revert_description;
+            const labelColor = process.env.LABEL_COLOR;
+            const labelDescription = process.env.LABEL_DESCRIPTION;
 
             console.log(`A reverter a eliminação: A recriar a label "${labelName}"`);
             try {
@@ -101,12 +105,17 @@ jobs:
       - name: Reverter Edição (Atualizar Label)
         if: steps.check_action.outputs.revert_action == 'edit'
         uses: actions/github-script@v7
+        env:
+          REVERT_TO_NAME: ${{ steps.check_action.outputs.revert_name }}
+          REVERT_TO_COLOR: ${{ steps.check_action.outputs.revert_color }}
+          REVERT_TO_DESCRIPTION: ${{ steps.check_action.outputs.revert_description }}
         with:
           github-token: ${{ secrets.PROJECT_PAT }}
           script: |
             const currentLabelName = context.payload.label.name;
-            const revertToName = steps.check_action.outputs.revert_name;
-            const revertToColor = steps.check_action.outputs.revert_color;
+            const revertToName = process.env.REVERT_TO_NAME;
+            const revertToColor = process.env.REVERT_TO_COLOR;
+            const revertToDescription = process.env.REVERT_TO_DESCRIPTION;
 
             console.log(`A reverter edição. Nome atual: ${currentLabelName}. Reverter para nome: ${revertToName}, cor: ${revertToColor}`);
             try {
@@ -115,7 +124,8 @@ jobs:
                 repo: context.repo.repo,
                 name: currentLabelName, 
                 new_name: revertToName, 
-                color: revertToColor    
+                color: revertToColor,
+                description: revertToDescription
               });
               console.log(`Edição de label "${currentLabelName}" revertida com sucesso.`);
             } catch (error) {
