@@ -5,7 +5,7 @@ on:
   issues:
     types: [opened, reopened, transferred]
   pull_request:
-    types: [opened, reopened]
+    types: [opened, reopened, ready_for_review]
 
 # Permissions are CRUCIAL for this workflow
 permissions:
@@ -272,3 +272,43 @@ jobs:
             `);
   
             console.log("Status and Priority fields set successfully.");
+            
+      - name: Set the Labels in Linked Issues
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.PROJECT_PAT }}
+          script: |
+
+            const prBody = context.payload.pull_request.body;
+            const closingKeywordRegex = /(?:close[sd]?|fix(es|ed)?|resolve[sd]?):\s+#(\d+)/gi;
+            const linkedIssueLabel = 'status: under review';
+
+            let match;
+            const linkedIssues = new Set(); // Used to prevent duplicates
+          
+            if (prBody) {
+                // Find all closing mentions in the PR body
+                while ((match = closingKeywordRegex.exec(prBody)) !== null) {
+                  linkedIssues.add(match[2]);
+                }
+            }
+          
+            if (linkedIssues.size > 0) {
+              console.log(`Linked issues found: ${Array.from(linkedIssues).join(', ')}`);
+          
+              for (const issueNumber of linkedIssues) {
+                try {
+                  await github.rest.issues.addLabels({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    issue_number: issueNumber,
+                    labels: [linkedIssueLabel]
+                  });
+                  console.log(`Added label '${linkedIssueLabel}' to Issue #${issueNumber}`);
+                } catch (error) {
+                  console.error(`Error adding label to Issue #${issueNumber}: ${error.message}`);
+                }
+              }
+            } else {
+              console.log('No linked issues with closing keywords found in the PR description.');
+            }
