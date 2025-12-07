@@ -12,13 +12,13 @@ permissions:
 jobs:
   revert_label_changes:
     runs-on: ubuntu-latest
+    if: github.actor != 'Raul-Paiva'
     steps:
       - name: Verificar o Tipo de Ação e Capturar Dados de Reversão
         id: check_action
         uses: actions/github-script@v7 
         with:
           script: |
-            const core = require('@actions/core');
             const ACTION = context.payload.action;
             const LABEL_NAME = context.payload.label.name;
             console.log(`Ação: ${ACTION} na label: ${LABEL_NAME}`);
@@ -26,7 +26,7 @@ jobs:
             let revertAction = '';
             let revertName = LABEL_NAME;
             let revertColor = context.payload.label.color;
-            let revertDescription = context.payload.label.description;
+            let revertDescription = context.payload.label.description || '';
 
             if (ACTION === 'created') {
               revertAction = 'delete';
@@ -38,15 +38,11 @@ jobs:
               const OLD_COLOR = context.payload.changes.color?.from;
               const OLD_DESCRIPTION = context.payload.changes.description?.from;
 
-              if (OLD_NAME) {
-                revertName = OLD_NAME;
-              }
-              if (OLD_COLOR) {
-                revertColor = OLD_COLOR;
-              }
-              if (OLD_DESCRIPTION) {
-                revertDescription = OLD_DESCRIPTION;
-              }
+              const changes = context.payload.changes;
+              
+              if (changes && changes.name) revertName = changes.name.from;
+              if (changes && changes.color) revertColor = changes.color.from;
+              if (changes && changes.description) revertDescription = changes.description.from;
             }
             
             // Define as saídas do passo
