@@ -4,7 +4,7 @@ name: Automatic Triage
 on:
   issues:
     types: [opened, reopened, transferred]
-  pull_request:
+  pull_request_target:
     types: [opened, reopened]
 
 # Permissions are CRUCIAL for this workflow
