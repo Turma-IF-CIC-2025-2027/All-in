@@ -1,0 +1,30 @@
+{
+  "name": "all-in",
+  "version": "1.0.0",
+  "description": "Projeto Ser+ da Turma IF CIC 2025/2027",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "build": "npx tsc",
+    "start": "node dist/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Turma-IF-CIC-2025-2027/All-in.git"
+  },
+  "keywords": [],
+  "author": "11IF_CIC_2025/2027",
+  "license": "",
+  "bugs": {
+    "url": "https://github.com/Turma-IF-CIC-2025-2027/All-in/issues"
+  },
+  "homepage": "https://github.com/Turma-IF-CIC-2025-2027/All-in#readme",
+  "devDependencies": {
+    "@types/node": "^25.0.10",
+    "@types/express": "^5.0.6",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
