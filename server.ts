@@ -1,12 +1,42 @@
-import express, { Express, Request, Response }  from 'express';
-const port = 8080;
+import "reflect-metadata";
+import express from 'express';
+import path from 'path';
+import cors from 'cors';
+import { AppDataSource } from './src/core/database/data-source'; //TypeORM config
+//import allRoutes from './modules/router'; //Routes
 
-const app: Express = express();
+const app = express();
+const PORT = process.env.PORT || 8080;
 
-app.get('/', (req: Request, res: Response) => {
-  res.send('Hello, World!');
+//Global Middlewares
+app.use(cors());  
+app.use(express.json()); 
+app.use(express.urlencoded({ extended: true }));
+
+//Add Static Files
+app.use(express.static(path.join(__dirname, '../public')));
+
+//Routes Injection
+//app.use('/', allRoutes);
+
+//Initialize BD
+/*AppDataSource.initialize()
+    .then(() => {
+        console.log("Database Connected");
+        
+        app.listen(PORT, () => {
+            console.log(`The server is running on: http://localhost:${PORT}`);
+        });
+    })
+    .catch((error:any) => {
+        console.error("Error connecting to the database", error);
+    });*/
+
+app.get('/', (req, res) => {
+    res.send("Hello World!");
 });
 
-app.listen(port, () => {
-  console.log(`Server is running at http://localhost:${port}`);
-});
+//Remove after this comment, just for testing while there is no DB
+app.listen(PORT, () => {
+            console.log(`The server is running on: http://localhost:${PORT}`);
+        });
