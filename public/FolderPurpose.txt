@@ -1,0 +1,1 @@
+This folder is meant to store all public available data like images, logos, some texts, etc..
