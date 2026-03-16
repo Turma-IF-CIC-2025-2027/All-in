@@ -38,15 +38,4 @@ export class AuthController {
             res.status(500).json({ message: 'Logout failed', error: error.message });
         }
     }
-
-    async getProfile(req: Request, res: Response): Promise<void> {
-        try {
-            // Implement get profile logic here
-            // Assume user is attached via middleware
-            // const user = req.user;
-            res.status(200).json({ message: 'Profile retrieved', user: {} });
-        } catch (error:any) {
-            res.status(500).json({ message: 'Failed to retrieve profile', error: error.message });
-        }
-    }
 }
