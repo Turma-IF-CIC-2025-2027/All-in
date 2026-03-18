@@ -9,10 +9,10 @@ router.get('/login', (req, res) => {
 });
 
 router.get('/register', (req, res) => {
-    res.sendFile('registrar.html', { root: './src/modules/auth/views' });
+    res.sendFile('register.html', { root: './src/modules/auth/views' });
 });
 
-router.post('/register', (req, res) => authController.register(req, res));
+router.post('/register', (req, res) => authController.register(req, res));  
 router.post('/login', (req, res) => authController.login(req, res));
 router.post('/logout', (req, res) => authController.logout(req, res));
 
