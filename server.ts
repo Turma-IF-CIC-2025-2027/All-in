@@ -1,23 +1,7 @@
-import "reflect-metadata";
-import express from 'express';
-import path from 'path';
-import cors from 'cors';
+import app from './app';
 import { AppDataSource } from './src/core/database/data-source'; //TypeORM config
-//import allRoutes from './modules/router'; //Routes
 
-const app = express();
-const PORT = process.env.PORT || 8080;
-
-//Global Middlewares
-app.use(cors());  
-app.use(express.json()); 
-app.use(express.urlencoded({ extended: true }));
-
-//Add Static Files
-app.use(express.static(path.join(__dirname, '../public')));
-
-//Routes Injection
-//app.use('/', allRoutes);
+const PORT = process.env.PORT || 80;
 
 //Initialize BD
 /*AppDataSource.initialize()
@@ -30,11 +14,8 @@ app.use(express.static(path.join(__dirname, '../public')));
     })
     .catch((error:any) => {
         console.error("Error connecting to the database", error);
+        process.exit(1);
     });*/
-
-app.get('/', (req, res) => {
-    res.send("Hello World!");
-});
 
 //Remove after this comment, just for testing while there is no DB
 app.listen(PORT, () => {
