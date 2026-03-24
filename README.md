@@ -16,7 +16,7 @@ Existem diversos perfis de alunos: alguns compreendem a matéria na escola; outr
 
 1. Promover e facilitar o estudo autónomo;
 2. Desenvolver o pensamento crítico e o aprofundamento técnico;
-3. Incentivar a comunicação e a entreajuda entre pares;
+3. Incentivar a comunicação e a entreajuda entre alunos;
 4. Apoiar causas sociais através da angariação de fundos.
 
 ### Específicos
@@ -24,9 +24,9 @@ Existem diversos perfis de alunos: alguns compreendem a matéria na escola; outr
 5. Abranger a comunidade educativa, com foco inicial em estudantes e docentes do Colégio Internato dos Carvalhos;
 
 6. Melhorar o desempenho académico, através da:
-- aquisição de conhecimentos sólidos;
-- redução das dificuldades de aprendizagem;
-- melhoria das classificações escolares;
+   - aquisição de conhecimentos sólidos;
+   - redução das dificuldades de aprendizagem;
+   - melhoria das classificações escolares;
 
 7. Fomentar a entreajuda, permitindo que alunos com maior domínio de determinados conteúdos apoiem colegas com mais dificuldades.
 
@@ -36,14 +36,17 @@ A plataforma All‑In permitirá:
 
 - realizar exercícios com diferentes níveis de dificuldade, criados por docentes ou alunos;
 - progredir por níveis, obter pontos e desbloquear novos conteúdos;
-- aceder a resumos, videoaulas e outros recursos com a Zona Premium (versão paga cujo rendimento será doado a instituições de solidariedade social).
+- aceder a resumos, videoaulas e outros recursos através da Zona Premium.
 
 ## Enquadramento cívico e alinhamento com os ODS
 
-- Direitos humanos: promover o direito à educação;
-- Literacia financeira e empreendedorismo: incluir componentes de gestão e economia social;
-- ODS 4 — Educação de Qualidade;
-- ODS 10 — Redução das Desigualdades.
+**Princípios Cívicos:**
+- Direitos humanos: promover o direito à educação
+- Literacia financeira e empreendedorismo: incluir componentes de gestão e economia social
+
+**Objetivos de Desenvolvimento Sustentável:**
+- ODS 4 — Educação de Qualidade
+- ODS 10 — Redução das Desigualdades
 
 ## Futuro
 
@@ -51,7 +54,7 @@ Planeia‑se alargar o uso da plataforma a outras escolas e instituições de en
 
 ### Responsáveis
 
-Turma 11.º IF — Colégio Internato dos Carvalhos (ano letivo 2025/2026).
+Turma IF — Colégio Internato dos Carvalhos (2025-2027).
 
 ### Destinatários
 
