@@ -1,0 +1,1 @@
+//Middlewares are like filters that can be applied in routes, for instance, when you want to restrict who can access that page/route.

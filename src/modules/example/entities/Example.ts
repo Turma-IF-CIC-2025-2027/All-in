@@ -1,19 +1,14 @@
 import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
 
 @Entity() // Isto diz ao TypeORM que esta classe é uma tabela no SQL
-export class UserEntity {
+export class Example {
+    /*
     @PrimaryGeneratedColumn()
-    id: string;
+    id: number;
 
     @Column()
-    username: string;
+    name: string;
 
     @Column()
-    email: string;
-
-    @Column()
-    password: string;
-
-    @Column()
-    age: number;
+    age: number;*/
 }
