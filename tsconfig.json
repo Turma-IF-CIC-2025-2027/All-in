@@ -8,13 +8,12 @@
     // Environment Settings
     // See also https://aka.ms/tsconfig/module
     "module": "commonjs",
-    "moduleResolution": "node",
+    "moduleResolution": "node10",
     "target": "ES2020",
     "esModuleInterop": true,
     // For nodejs:
-    // "lib": ["esnext"],
-    // "types": ["node"],
-    // and npm install -D @types/node
+    "lib": ["esnext"],
+    "types": ["node"],
 
     // Other Outputs
     "sourceMap": true,
@@ -41,6 +40,16 @@
     "noUncheckedSideEffectImports": true,
     //"moduleDetection": "force",
     "skipLibCheck": true,
+
+    // TypeORM 
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "strictPropertyInitialization": false,
+    
+
+    // Paths
+    "baseUrl": "./",
+    "typeRoots": ["./node_modules/@types", "./src/types"]
   },
     "include": ["src/**/*" , "server.ts"]
 }
