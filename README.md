@@ -61,5 +61,4 @@ Turma IF — Colégio Internato dos Carvalhos (2025-2027).
 A comunidade educativa em geral, com implementação inicial no Colégio Internato dos Carvalhos.
 
 ---
-
 Obrigado por escolher o All‑In
