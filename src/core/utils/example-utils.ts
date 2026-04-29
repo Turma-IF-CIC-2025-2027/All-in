@@ -1,1 +1,0 @@
-//Anything that doesn't in other folders. Help Functions and extra utilities (Ex: Logger.ts, Validator.ts)
