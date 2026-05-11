@@ -7,14 +7,7 @@
         die("Acesso negado.");
     }*/
 
-    $conn=null;
     require_once 'db_connect.php';
-
-    if(!$conn){
-        $mensagem='<h3 class="erro">Erro: ' . mysqli_connect_error() . '</h3>';
-        echo $mensagem;
-        die("Falha na ligação: " . mysqli_connect_error());
-    }
 
     $mensagem="";
     $existe=false;
