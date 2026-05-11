@@ -11,9 +11,6 @@
     require_once './db_connect.php';
     include 'header.php';
 
-    $conn = mysqli_connect($bd_host, $bd_user, $bd_password, $bd_database);
-    if (!$conn) die("Erro na ligação: " . mysqli_connect_error());
-
     $query = "SELECT u.nome, SUM(a.pontuacao) AS total_pontos
               FROM tb_users u
               JOIN tb_attempts a ON u.id = a.user_id
