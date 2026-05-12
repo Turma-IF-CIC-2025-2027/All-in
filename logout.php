@@ -19,6 +19,7 @@ if (ini_get('session.use_cookies')) {
 }
 
 //destroy session
+session_unset();
 session_destroy();
 
 //voltar para a pagina principal
