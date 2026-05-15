@@ -1,17 +1,9 @@
 <?php
-session_start();
 
-require_once '../php/db_connect.php';
+require_once 'session.php';
+require_once 'db_connect.php';
 
-// Verificar sessão e permissões
-if (
-    !isset($_SESSION['id_user']) ||
-    ($_SESSION['tipo_user'] != 'prof' &&
-     $_SESSION['tipo_user'] != 'admin')
-) {
-    header("Location: login.php");
-    exit();
-}
+include 'header.php';
 
 // Buscar disciplinas
 $sql_disc = "
@@ -27,7 +19,6 @@ if (!$result_disc) {
     die("Erro ao carregar disciplinas.");
 }
 
-include 'header.php';
 ?>
 
 <div class="container mt-5 mb-5">
@@ -45,7 +36,7 @@ include 'header.php';
         <div class="card-body">
 
             <form
-                action="../php/upload_pergunta.php"
+                action="upload_pergunta.php"
                 method="POST"
                 enctype="multipart/form-data"
             >
@@ -387,7 +378,7 @@ document
     if(idDisciplina !== ''){
 
         fetch(
-            '../php/get_temas.php?id_disciplina='
+            'get_temas.php?id_disciplina='
             + idDisciplina
         )
 
