@@ -9,15 +9,21 @@ if(isset($_GET['id_disciplina'])){
     $sql = "
         SELECT id, nome
         FROM tb_themes
-        WHERE disciplina_id = $id_disciplina
+        WHERE disciplina_id = ?
         ORDER BY nome ASC
     ";
 
-    $result = mysqli_query($conn, $sql);
+    $stmt = $conn->prepare($sql);
+
+    $stmt->bind_param("i", $id_disciplina);
+
+    $stmt->execute();
+
+    $result = $stmt->get_result();
 
     $temas = [];
 
-    while($row = mysqli_fetch_assoc($result)){
+    while($row = $result->fetch_assoc()){
         $temas[] = $row;
     }
 
