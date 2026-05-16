@@ -5,28 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <style>
-        .footer-wrap {
-            padding: 1.5rem 2.5rem;
-            border-top: 1px solid rgba(201,168,76,0.15);
-            background: rgba(187, 186, 183, 0.7);
-            display: grid;
-            grid-template-columns: 1fr auto 1fr;
-            align-items: center;
-            gap: 1rem;
-            position: sticky;
-            bottom: 0;
-        }
-
-        .footer-left { display: flex; flex-direction: column; gap: 4px; }
-        .footer-logo { font-size: 1.1rem; font-weight: 500; color: black; letter-spacing: 0.1em; }
-        .footer-tagline { font-size: 0.7rem; letter-spacing: 0.1em; color: rgba(0,0,0,0.5); }
-        .footer-center { text-align: center; font-size: 0.75rem; color: rgba(0,0,0,0.6); letter-spacing: 0.05em; }
-        .footer-right { display: flex; justify-content: flex-end; align-items: center; gap: 0.75rem; }
-        .footer-right a { color: rgba(0,0,0,0.6); transition: color 0.2s; display: flex; align-items: center; }
-        .footer-right a:hover { color: black; }
-
-    </style>
 </head>
 <body>
     <footer class="footer-wrap">

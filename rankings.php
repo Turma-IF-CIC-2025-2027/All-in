@@ -22,24 +22,7 @@
     $resultado = mysqli_query($conn, $query);
 ?>
 
-<style>
-    .rk-wrap  { padding: 2rem; width: 100%; box-sizing: border-box; }
-    .rk-title { font-size: 22px; font-weight: 500; margin: 0 0 1.5rem; display: flex; align-items: center; gap: 10px; }
-    .rk-table { width: 100%; border-collapse: collapse; }
-    .rk-table thead tr  { border-bottom: 2px solid #dee2e6; }
-    .rk-table th  { font-size: 13px; font-weight: 500; color: #6c757d; padding: 10px 16px; text-align: left; text-transform: uppercase; letter-spacing: 0.06em; }
-    .rk-table th.right { text-align: right; }
-    .rk-table td  { padding: 14px 16px; border-bottom: 1px solid #f0f0f0; font-size: 15px; vertical-align: middle; }
-    .rk-table tr:last-child td { border-bottom: none; }
-    .rk-table tbody tr:hover td { background: #f8f9fa; }
-    .pos-badge { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 8px; font-weight: 500; font-size: 15px; }
-    .gold   { background: #C9A84C; color: #412402; }
-    .silver { background: #A8A8A8; color: #2C2C2A; }
-    .bronze { background: #A0522D; color: #FAEEDA; }
-    .other  { background: #f0f0f0; color: #6c757d; font-size: 14px; }
-    .pts    { text-align: right; font-weight: 500; }
-    .pts span { font-size: 13px; font-weight: 400; color: #6c757d; margin-left: 3px; }
-</style>
+
 
 <div class="rk-wrap">
     <h2 class="rk-title">
