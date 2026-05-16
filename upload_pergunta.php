@@ -1,14 +1,14 @@
 <?php
 session_start();
 
-require_once '../php/db_connect.php';
+require_once 'db_connect.php';
 
 if (
     !isset($_SESSION['id_user']) ||
     ($_SESSION['tipo_user'] != 'prof' &&
      $_SESSION['tipo_user'] != 'admin')
 ) {
-    header("Location: ../public/login.php");
+    header("Location: ./login.php");
     exit();
 }
 
@@ -27,18 +27,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $f = $_FILES['perg_imagem'];
 
         if ($f['size'] > 2097152) die("Ficheiro muito grande! Máximo 2MB.");
-
+        
         $extensao = strtolower(pathinfo($f['name'], PATHINFO_EXTENSION));
         if ($extensao != "jpg" && $extensao != "png") die("Formato inválido. Use JPG ou PNG.");
-
+        
         $novo_nome = time() . "_" . $f['name'];
-        $destino = "../uploads/" . $novo_nome;
-
+        $destino = "./uploads/" . $novo_nome;
+        
         if (move_uploaded_file($f['tmp_name'], $destino)) $imagem_path = $destino; 
-        else die("Erro ao mover o ficheiro para ../uploads/ .");
+        else die("Erro ao mover o ficheiro para ./uploads/ .");
     }
     else $imagem_path = null;
-
+    
     $sql = "
         INSERT INTO tb_questions
         (
@@ -55,9 +55,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         )
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     ";
-
+    
     $stmt = mysqli_prepare($conn, $sql);
-
+    
     mysqli_stmt_bind_param(
         $stmt,
         "ssssssiisi",
@@ -72,14 +72,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $imagem_path,
         $dificuldade
     );
-
+    
     if (mysqli_stmt_execute($stmt)) {
-        header("Location: ../public/lista_perguntas.php?sucesso=1");
+        header("Location: ./lista_perguntas.php?sucesso=1");
         exit();
     } else {
         echo "Erro ao guardar pergunta.";
     }
-
+    
     mysqli_stmt_close($stmt);
 }
 ?>
