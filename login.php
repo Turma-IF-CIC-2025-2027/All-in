@@ -1,21 +1,16 @@
 <?php
 session_start();
-require_once "db_connection.php";
+require_once "db_connect.php";
 
-if (isset($_GET['action']) && $_GET['action'] === 'logout') {
-    session_destroy();
-    header('Location: login.php');
-    exit;
-}
-
-if (isset($_SESSION['user'])) {
+if (isset($_SESSION['nome_user'])) {
+    $display_user = $_SESSION['nome_user'];
     ?>
     <!DOCTYPE html>
     <html>
     <head><title>Dashboard</title></head>
     <body>
-        <h1>Welcome, <?= htmlspecialchars($_SESSION['user']) ?>!</h1>
-        <a href="login.php?action=logout">Logout</a>
+        <h1>Welcome, <?= htmlspecialchars($display_user) ?>!</h1>
+        <a href="logout.php">Logout</a>
     </body>
     </html>
     <?php
@@ -27,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $login    = trim($_POST['login'] ?? '');
     $password = trim($_POST['password'] ?? '');
     
-    $stmt = $conn->prepare('SELECT id, username, password, type FROM users WHERE username = ? OR email = ? LIMIT 1');
+    $stmt = $conn->prepare('SELECT id, nome, password, tipo FROM tb_users WHERE nome = ? OR email = ? LIMIT 1');
     $stmt->bind_param('ss', $login, $login);
     $stmt->execute();
     $stmt->store_result();
