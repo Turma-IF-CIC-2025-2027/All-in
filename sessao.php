@@ -14,7 +14,7 @@ function verificar_sessao() {
         session_start();
     }
     if (!isset($_SESSION['id_user'])) {
-        header('Location: ../public/login.php');
+        header('Location: login.php');
         exit();
     }
 }
