@@ -1,6 +1,8 @@
 <?php
 
-require_once 'session.php';
+require_once 'sessao.php';
+verificar_sessao();
+
 require_once 'db_connect.php';
 
 include 'header.php';
@@ -62,17 +64,13 @@ if (!$result_disc) {
                             -- Selecionar Disciplina --
                         </option>
 
-                        <?php
-                        while($disc = mysqli_fetch_assoc($result_disc)){
-                        ?>
+                        <?php while($disc = mysqli_fetch_assoc($result_disc)){ ?>
 
                             <option value="<?php echo $disc['id']; ?>">
-                                <?php echo $disc['nome']; ?>
+                                <?php echo htmlspecialchars($disc['nome']); ?>
                             </option>
 
-                        <?php
-                        }
-                        ?>
+                        <?php } ?>
 
                     </select>
 
@@ -127,7 +125,6 @@ if (!$result_disc) {
                 <!-- OPÇÕES -->
                 <div class="row">
 
-                    <!-- A -->
                     <div class="col-md-6 mb-3">
 
                         <label class="form-label fw-bold">
@@ -144,7 +141,6 @@ if (!$result_disc) {
 
                     </div>
 
-                    <!-- B -->
                     <div class="col-md-6 mb-3">
 
                         <label class="form-label fw-bold">
@@ -165,7 +161,6 @@ if (!$result_disc) {
 
                 <div class="row">
 
-                    <!-- C -->
                     <div class="col-md-6 mb-3">
 
                         <label class="form-label fw-bold">
@@ -182,7 +177,6 @@ if (!$result_disc) {
 
                     </div>
 
-                    <!-- D -->
                     <div class="col-md-6 mb-3">
 
                         <label class="form-label fw-bold">
@@ -210,66 +204,29 @@ if (!$result_disc) {
 
                     <div>
 
-                        <div class="form-check form-check-inline">
+                        <?php
+                        $opcoes = ['A', 'B', 'C', 'D'];
 
-                            <input
-                                class="form-check-input"
-                                type="radio"
-                                name="resp_correta"
-                                value="A"
-                                required
-                            >
+                        foreach($opcoes as $opcao){
+                        ?>
 
-                            <label class="form-check-label">
-                                A
-                            </label>
+                            <div class="form-check form-check-inline">
 
-                        </div>
+                                <input
+                                    class="form-check-input"
+                                    type="radio"
+                                    name="resp_correta"
+                                    value="<?php echo $opcao; ?>"
+                                    required
+                                >
 
-                        <div class="form-check form-check-inline">
+                                <label class="form-check-label">
+                                    <?php echo $opcao; ?>
+                                </label>
 
-                            <input
-                                class="form-check-input"
-                                type="radio"
-                                name="resp_correta"
-                                value="B"
-                            >
+                            </div>
 
-                            <label class="form-check-label">
-                                B
-                            </label>
-
-                        </div>
-
-                        <div class="form-check form-check-inline">
-
-                            <input
-                                class="form-check-input"
-                                type="radio"
-                                name="resp_correta"
-                                value="C"
-                            >
-
-                            <label class="form-check-label">
-                                C
-                            </label>
-
-                        </div>
-
-                        <div class="form-check form-check-inline">
-
-                            <input
-                                class="form-check-input"
-                                type="radio"
-                                name="resp_correta"
-                                value="D"
-                            >
-
-                            <label class="form-check-label">
-                                D
-                            </label>
-
-                        </div>
+                        <?php } ?>
 
                     </div>
 
@@ -296,25 +253,11 @@ if (!$result_disc) {
                             -- Selecionar Dificuldade --
                         </option>
 
-                        <option value="1">
-                            1 - Muito Fácil
-                        </option>
-
-                        <option value="2">
-                            2 - Fácil
-                        </option>
-
-                        <option value="3">
-                            3 - Médio
-                        </option>
-
-                        <option value="4">
-                            4 - Difícil
-                        </option>
-
-                        <option value="5">
-                            5 - Muito Difícil
-                        </option>
+                        <option value="1">1 - Muito Fácil</option>
+                        <option value="2">2 - Fácil</option>
+                        <option value="3">3 - Médio</option>
+                        <option value="4">4 - Difícil</option>
+                        <option value="5">5 - Muito Difícil</option>
 
                     </select>
 
@@ -379,7 +322,7 @@ document
 
         fetch(
             'get_temas.php?id_disciplina='
-            + idDisciplina
+            + encodeURIComponent(idDisciplina)
         )
 
         .then(response => response.json())
@@ -401,7 +344,7 @@ document
 
         })
 
-        .catch(error => {
+        .catch(() => {
 
             temaSelect.innerHTML =
                 '<option value="">Erro ao carregar temas</option>';
@@ -409,7 +352,6 @@ document
         });
 
     }
-
     else{
 
         temaSelect.innerHTML =
