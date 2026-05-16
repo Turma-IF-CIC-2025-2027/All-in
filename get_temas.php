@@ -15,6 +15,10 @@ if(isset($_GET['id_disciplina'])){
 
     $stmt = $conn->prepare($sql);
 
+    if(!$stmt){
+        die("Erro na preparação da query.");
+    }
+
     $stmt->bind_param("i", $id_disciplina);
 
     $stmt->execute();
@@ -27,6 +31,10 @@ if(isset($_GET['id_disciplina'])){
         $temas[] = $row;
     }
 
+    header('Content-Type: application/json');
+
     echo json_encode($temas);
+
+    $stmt->close();
 }
 ?>
