@@ -25,7 +25,7 @@ function verificar_tipo($tipos) {
         $tipos = [$tipos];
     }
     if (!in_array($_SESSION['tipo_user'], $tipos)) {
-        header('Location: ../public/login.php');
+        header('Location: login.php');
         exit();
     }
 }
