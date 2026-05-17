@@ -1,5 +1,6 @@
 <?php
     require_once 'sessao.php';
+    verificar_sessao();
 
     require_once 'db_connect.php';
 
@@ -342,5 +343,5 @@ else if(isset($_POST['apagar_disciplina'])){
 </table>
 </div>
 
-<? include 'footer.php'; ?>
+<?php include 'footer.php'; ?>
 </body>
