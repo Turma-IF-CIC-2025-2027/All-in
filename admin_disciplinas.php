@@ -1,11 +1,5 @@
-<?php session_start();
-
-    /*ver depois o facto de tipo de user que pode aceder a página ser apenas administrador
-    if(tipo_user=="admin"){}*/
-
-    /*if(!isset($_SESSION['tipo_user']) || $_SESSION['tipo_user']!="admin") {
-        die("Acesso negado.");
-    }*/
+<?php
+    require_once 'sessao.php';
 
     require_once 'db_connect.php';
 
@@ -13,6 +7,8 @@
     $existe=false;
 
     $id_disciplina=$nomedisciplina="";
+
+    include 'header.php';
 ?>
 
 <!DOCTYPE html>
@@ -20,7 +16,135 @@
     <meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Inserção de dados - Disciplinas</title>
-    <link rel="stylesheet" href="public/css/admin.css">
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body{
+            font-family: Arial, sans-serif;
+            background: #f4f6fb;
+            color: #222;
+            padding: 30px 20px 50px;
+        }
+
+        #inserirdisciplinas{
+            width: min(700px, 95%);
+            margin: 0 auto;
+            padding: 28px 32px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 28px rgba(0,0,0,0.10);
+            color: #222;
+        }
+
+        h2,
+        h3{
+            text-align: center;
+            margin-bottom: 20px;
+            color: #1f2d5c;
+        }
+
+        label{
+            display: block;
+            font-weight: bold;
+            margin-bottom: 6px;
+        }
+
+        input[type="text"]{
+            width: 100%;
+            padding: 9px 12px;
+            border: 1px solid #cfd6e4;
+            border-radius: 6px;
+            font-size: 14px;
+            margin-top: 4px;
+            margin-bottom: 14px;
+            background: white;
+        }
+
+        input[type="text"]:focus{
+            outline: none;
+            border-color: #1f5eff;
+            box-shadow: 0 0 0 3px rgba(31,94,255,0.12);
+        }
+
+        input[type="submit"]{
+            padding: 9px 18px;
+            border: none;
+            border-radius: 6px;
+            background: #1f5eff;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.15s ease;
+            margin-right: 8px;
+        }
+
+        input[type="submit"]:hover {
+            background: #153fb6;
+        }
+
+        .alert,
+        .alert2{
+            margin-top: 14px;
+            padding: 10px 14px;
+            border-radius: 6px;
+            font-weight: bold;
+        }
+
+        .alert{
+            background: #ffe6e6;
+            color: #b10000;
+        }
+
+        .alert2{
+            background: #e7f9eb;
+            color: #0d7a28;
+        }
+
+        #listado{
+            width: min(900px, 95%);
+            margin: 35px auto 0;
+        }
+
+        #listado table{
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            box-shadow: 0 8px 22px rgba(0,0,0,0.06);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        #listado th{
+            background: #1f2d5c;
+            color: white;
+            padding: 12px 10px;
+            font-size: 14px;
+        }
+
+        #listado td{
+            padding: 10px;
+            text-align: center;
+            border-bottom: 1px solid #edf0f5;
+        }
+
+        #listado tr:hover{
+            background: #f7faff;
+        }
+
+        #listado form{
+            display: inline-block;
+            margin: 2px;
+        }
+
+        #listado input[type="submit"]{
+            padding: 6px 10px;
+            font-size: 13px;
+        }
+    </style>
 </head>
 
 <body>
@@ -218,4 +342,5 @@ else if(isset($_POST['apagar_disciplina'])){
 </table>
 </div>
 
+<? include 'footer.php'; ?>
 </body>
