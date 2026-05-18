@@ -74,7 +74,7 @@ if(isset($_POST['eliminarTema'])){
 <select name="disciplina" id="disciplina">
 <option value="">Selecione uma disciplina</option>
 <?php
-$query = "SELECT id, nome FROM tb_disciplinas";
+$query = "SELECT id, nome FROM tb_disciplines";
 $result = $conn->query($query);
 while ($row = mysqli_fetch_assoc($result)) {
     echo "<option value='{$row['id']}'>{$row['nome']}</option>";
@@ -91,7 +91,7 @@ while ($row = mysqli_fetch_assoc($result)) {
 <select name="disciplina_list" id="disciplina_list">
 <option value="">Selecione uma disciplina</option>
 <?php
-$query = "SELECT id, nome FROM tb_disciplinas";
+$query = "SELECT id, nome FROM tb_disciplines";
 $result = $conn->query($query);
 while ($row = mysqli_fetch_assoc($result)) {
     echo "<option value='{$row['id']}'>{$row['nome']}</option>";
