@@ -1,10 +1,7 @@
 <?php
-session_start();
-if (!isset($_SESSION['id_user'], $_SESSION['tipo_user']) || $_SESSION['tipo_user'] == 'aluno') {
-    header("Location: index.php");
-    exit();
-}
+include 'sessao.php';
 require_once 'db_connect.php';
+verificar_sessao();
 ?>
 <!DOCTYPE html>
 <html lang="en">
